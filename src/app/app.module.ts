@@ -1,18 +1,34 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AuthModule } from './auth/auth.module';
+import { AuthService } from './auth/auth.service';
+import { CharactersListComponent } from './characters-list/characters-list.component';
+import { GameSelectorComponent } from './game-selector/game-selector.component';
+import { LogService } from './logging/log.service';
+import { PlayerModule } from './player/player.module';
+import { PlayerService } from './player/player.service';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent, 
+    GameSelectorComponent, 
+    CharactersListComponent
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule
+    BrowserModule, 
+    FormsModule, 
+    PlayerModule, 
+    HttpClientModule, 
+    AuthModule
   ],
-  providers: [],
+  providers: [
+    PlayerService, 
+    LogService, 
+    AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

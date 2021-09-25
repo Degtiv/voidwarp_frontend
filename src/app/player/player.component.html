@@ -1,0 +1,30 @@
+<div class="panel">
+    <div>
+        <input [(ngModel)]="player.uuid" placeholder="uuid" #uuid="ngModel" class="form-control" name="uuid" required=""/>
+        <div [hidden]="uuid.valid || uuid.untouched" class="alert alert-danger">
+            uuid not valid
+        </div>
+        <input [(ngModel)]="player.username" placeholder="username" #username="ngModel" class="form-control" name="username" required=""/>
+        <div [hidden]="username.valid || username.untouched" class="alert alert-danger">
+            username not valid
+        </div>
+        <select name="status" [(ngModel)]="player.status">
+            <option *ngFor="let stat of statuses" [value]="stat">
+                {{stat}}
+            </option>
+        </select> 
+        <button [disabled] = "uuid.invalid || username.invalid" class="btn btn-default" (click)="addPlayer()">Add</button>
+    </div>
+    <table id="players">
+        <tr>
+            <th>uuid</th>
+            <th>username</th>
+            <th>status</th>
+        </tr>
+        <tr *ngFor="let player of players">
+            <td>{{player.uuid}}</td>
+            <td>{{player.username}}</td>
+            <td>{{player.status}}</td>
+        </tr>
+    </table>
+</div>

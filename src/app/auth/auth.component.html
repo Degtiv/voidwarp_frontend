@@ -1,0 +1,20 @@
+<div *ngIf="isLoggedIn()">
+    <p>logged in</p>
+</div>
+<div *ngIf="!isLoggedIn()">
+    <div>
+        <input [(ngModel)]="username" placeholder="username" #authUsername="ngModel" class="form-control" name="username" required=""/>
+        <div [hidden]="authUsername.valid || authUsername.untouched" class="alert alert-danger">
+            username not valid
+        </div>
+        <input [(ngModel)]="password" placeholder="password" #authPassword="ngModel" class="form-control" name="password" required="" type="password"/>
+        <div [hidden]="authPassword.valid || authPassword.untouched" class="alert alert-danger">
+            password not valid
+        </div>
+        <button [disabled] = "authUsername.invalid || authPassword.invalid" class="btn btn-default" (click)="login()">Log in</button>
+    </div>    
+</div>
+<div>
+    <p>token: {{getToken()}}</p>
+    <p>isLoggedIn(): {{isLoggedIn()}}</p>
+</div>
