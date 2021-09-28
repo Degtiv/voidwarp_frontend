@@ -1,10 +1,12 @@
 import { Injectable } from "@angular/core";
+import { environment } from "src/environments/environment";
 import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { BehaviorSubject } from "rxjs/internal/BehaviorSubject";
 
 @Injectable()
 export class AuthService {
-    private url = "http://localhost:8080/login";
+
+    private url = "http://" + environment.backendHost + ":8080/login";
     private _token = "";
     public isLoggedIn:boolean = false;
 
