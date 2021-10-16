@@ -1,7 +1,7 @@
 <div *ngIf="isLoggedIn()">
     <p>logged in</p>
 </div>
-<div *ngIf="!isLoggedIn()">
+<div *ngIf="!isLoggedIn() && !isRegistrationFormOpened()">
     <div>
         <input [(ngModel)]="username" placeholder="username" #authUsername="ngModel" class="form-control" name="username" required=""/>
         <div [hidden]="authUsername.valid || authUsername.untouched" class="alert alert-danger">
@@ -12,8 +12,28 @@
             password not valid
         </div>
         <button [disabled] = "authUsername.invalid || authPassword.invalid" class="btn btn-default" (click)="login()">Log in</button>
-    </div>    
+    </div>
+    <button class="btn btn-default" (click)="switchRegistrationForm()">Register</button>  
 </div>
+<div  *ngIf="!isLoggedIn() && isRegistrationFormOpened()">
+    <div>
+        <input [(ngModel)]="username" placeholder="username" #authUsername="ngModel" class="form-control" name="username" required=""/>
+        <div [hidden]="authUsername.valid || authUsername.untouched" class="alert alert-danger">
+            username not valid
+        </div>
+        <input [(ngModel)]="email" placeholder="email" #authEmail="ngModel" class="form-control" name="email" required=""/>
+        <div [hidden]="authEmail.valid || authEmail.untouched" class="alert alert-danger">
+            email not valid
+        </div>
+        <input [(ngModel)]="password" placeholder="password" #authPassword="ngModel" class="form-control" name="password" required="" type="password"/>
+        <div [hidden]="authPassword.valid || authPassword.untouched" class="alert alert-danger">
+            password not valid
+        </div>
+        <button [disabled] = "authUsername.invalid || authPassword.invalid" class="btn btn-default" (click)="register()">Register</button>
+    </div>   
+    <button class="btn btn-default" (click)="switchRegistrationForm()">Log in</button>  
+</div>
+
 <div>
     <p>token: {{getToken()}}</p>
     <p>isLoggedIn(): {{isLoggedIn()}}</p>

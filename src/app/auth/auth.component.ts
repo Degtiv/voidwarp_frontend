@@ -1,5 +1,4 @@
-import { Component, OnInit } from "@angular/core";
-import { BehaviorSubject, Observable } from "rxjs";
+import { Component } from "@angular/core";
 import { AuthService } from "./auth.service";
 
 @Component({
@@ -9,6 +8,7 @@ import { AuthService } from "./auth.service";
 })
 export class AuthComponent {
     public username: string = "";
+    public email: string = "";
     public password: string = "";
     
     constructor(private authService: AuthService) {}
@@ -17,8 +17,20 @@ export class AuthComponent {
         this.authService.login(this.username, this.password);
     }
 
+    register() {
+        this.authService.register(this.username, this.password, this.email);
+    }
+
+    switchRegistrationForm() {
+        this.authService.isRegistrationFormOpened = !this.authService.isRegistrationFormOpened;
+    }
+
     isLoggedIn(): boolean {
         return this.authService.isLoggedIn;
+    }
+
+    isRegistrationFormOpened(): boolean {
+        return this.authService.isRegistrationFormOpened;
     }
 
     getToken(): String {
