@@ -1,0 +1,16 @@
+<div class="">
+    <div>
+        <button class="btn btn-primary" (click)="getAllPlayers()">get all players</button>
+    </div>
+    <div class="card" *ngFor="let player of players">
+        <p [class.isDisabled]="!player.isActive">{{ player.username }}
+        </p>
+        <p>
+            <small>uuid: {{ player.uuid }}</small>
+        </p>
+        <div>
+            <button class="btn btn-danger" (click)="deletePlayer(player.uuid)">Delete</button>
+            <button class="btn btn-warning" [disabled]="player.isActive">Deactivate</button>
+        </div>
+    </div>
+</div>

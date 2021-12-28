@@ -6,24 +6,26 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
-import { CharactersListComponent } from './characters-list/characters-list.component';
-import { GameSelectorComponent } from './game-selector/game-selector.component';
+import { StyleDirective } from './directives/style.directive';
 import { LogService } from './logging/log.service';
 import { PlayerModule } from './player/player.module';
 import { PlayerService } from './player/player.service';
+import { AdminComponent } from './admin/admin.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
     AppComponent, 
-    GameSelectorComponent, 
-    CharactersListComponent
+    StyleDirective,
+    AdminComponent
   ],
   imports: [
     BrowserModule, 
     FormsModule, 
     PlayerModule, 
     HttpClientModule, 
-    AuthModule
+    AuthModule,
+    AppRoutingModule
   ],
   providers: [
     PlayerService, 

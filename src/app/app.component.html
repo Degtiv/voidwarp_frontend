@@ -1,10 +1,5 @@
-<app-auth-block></app-auth-block>
-<div id="content" *ngIf="isLoggedIn">
-    <div>
-        <game-selector></game-selector>
-    </div>
-    <div>
-        <characters-list></characters-list>
-    </div>
+<div class="container-fluid">
+    <button class="btn btn-link" (click)="router.navigate(['/'])">Home</button>
+    <button class="btn btn-link" (click)="router.navigate(['/admin'])">Admin</button>
+    <router-outlet></router-outlet>
 </div>
-

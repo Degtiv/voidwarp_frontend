@@ -1,40 +1,145 @@
 <div *ngIf="isLoggedIn()">
     <p>logged in</p>
-</div>
-<div *ngIf="!isLoggedIn() && !isRegistrationFormOpened()">
-    <div>
-        <input [(ngModel)]="username" placeholder="username" #authUsername="ngModel" class="form-control" name="username" required=""/>
-        <div [hidden]="authUsername.valid || authUsername.untouched" class="alert alert-danger">
-            username not valid
-        </div>
-        <input [(ngModel)]="password" placeholder="password" #authPassword="ngModel" class="form-control" name="password" required="" type="password"/>
-        <div [hidden]="authPassword.valid || authPassword.untouched" class="alert alert-danger">
-            password not valid
-        </div>
-        <button [disabled] = "authUsername.invalid || authPassword.invalid" class="btn btn-default" (click)="login()">Log in</button>
-    </div>
-    <button class="btn btn-default" (click)="switchRegistrationForm()">Register</button>  
-</div>
-<div  *ngIf="!isLoggedIn() && isRegistrationFormOpened()">
-    <div>
-        <input [(ngModel)]="username" placeholder="username" #authUsername="ngModel" class="form-control" name="username" required=""/>
-        <div [hidden]="authUsername.valid || authUsername.untouched" class="alert alert-danger">
-            username not valid
-        </div>
-        <input [(ngModel)]="email" placeholder="email" #authEmail="ngModel" class="form-control" name="email" required=""/>
-        <div [hidden]="authEmail.valid || authEmail.untouched" class="alert alert-danger">
-            email not valid
-        </div>
-        <input [(ngModel)]="password" placeholder="password" #authPassword="ngModel" class="form-control" name="password" required="" type="password"/>
-        <div [hidden]="authPassword.valid || authPassword.untouched" class="alert alert-danger">
-            password not valid
-        </div>
-        <button [disabled] = "authUsername.invalid || authPassword.invalid" class="btn btn-default" (click)="register()">Register</button>
-    </div>   
-    <button class="btn btn-default" (click)="switchRegistrationForm()">Log in</button>  
+    <button class="btn btn-outline-danger" (click)="logout()">Logout</button>
 </div>
 
-<div>
-    <p>token: {{getToken()}}</p>
-    <p>isLoggedIn(): {{isLoggedIn()}}</p>
+<div class="row justify-content-center">
+    <div *ngIf="!isLoggedIn()" class="col-6 col-lg-4">
+        <div *ngIf="!isRegistrationFormOpened()">
+            <div class="row justify-content-center">
+                <div class="col-sm-3 text-center">
+                    <h3>Log&nbsp;In</h3>
+                </div>
+            </div>
+            <form [formGroup]="loginFormGroup" (ngSubmit)="login()">
+                <div class="col mb-3 has-validation">
+                    <label class="form-label">Username</label>
+                    <input class="form-control"
+                        [class.is-invalid]="this.loginFormGroup.get('username')?.invalid && this.loginFormGroup.get('username')?.touched"
+                        type="text" placeholder="username" formControlName="username" />
+
+                    <div class="invalid-feedback" *ngIf="this.loginFormGroup.get('username')?.errors?.required">
+                        Username could not be empty
+                    </div>
+                    <div class="invalid-feedback" *ngIf="this.loginFormGroup.get('username')?.errors?.minlength">
+                        Username must be {{loginFormGroup.get('username')?.errors?.minlength?.requiredLength}}
+                        symbols
+                        at
+                        least
+                    </div>
+                </div>
+                <div class="col mb-3 has-validation">
+                    <label class="form-label">Password</label>
+                    <input class="form-control"
+                        [class.is-invalid]="this.loginFormGroup.get('password')?.invalid && this.loginFormGroup.get('password')?.touched"
+                        placeholder="password" required="" type="password" formControlName="password" />
+
+                    <div class="invalid-feedback" *ngIf="this.loginFormGroup.get('password')?.errors?.required">
+                        Password could not be empty
+                    </div>
+                    <div class="invalid-feedback" *ngIf="this.loginFormGroup.get('password')?.errors?.minlength">
+                        Password must be {{loginFormGroup.get('password')?.errors?.minlength?.requiredLength}}
+                        symbols
+                        at
+                        least
+                    </div>
+                </div>
+                <div class="row justify-content-between">
+                    <div class="col-auto">
+                        <button class="btn btn-link"
+                            (click)="switchRegistrationForm()">{{getSwitchText()}}</button>
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-success" type="submit" [disabled]="loginFormGroup.invalid">Log
+                            in</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="alert alert-danger mt-3" *ngIf="isLoginFailed()" role="alert">
+                <p>A player with this username was not found or the password was entered incorrectly.
+                    <br>If you have not registered yet, you can do it on <a (click)="switchRegistrationForm()" href="#"
+                        class="alert-link">this form</a>.
+                    <br>
+                    Otherwise, contact the administrator by mail degtiv@yandex.ru
+                </p>
+            </div>
+
+            <div class="alert alert-success mt-3" *ngIf="isRegistrationSuccesfull()" role="alert">
+                <p>Registration completed successfully!</p>
+            </div>
+        </div>
+
+        <div *ngIf="isRegistrationFormOpened()">
+            <div class="row justify-content-center">
+                <div class="col-4 text-center">
+                    <h3>Registration</h3>
+                </div>
+            </div>
+            <form [formGroup]="registerFormGroup" (ngSubmit)="register()">
+                <div class="col mb-3 has-validation">
+                    <label class="form-label">Username</label>
+                    <input class="form-control"
+                        [class.is-invalid]="this.registerFormGroup.get('username')?.invalid && this.registerFormGroup.get('username')?.touched"
+                        type="text" placeholder="username" formControlName="username" />
+
+                    <div class="invalid-feedback" *ngIf="this.registerFormGroup.get('username')?.errors?.required">
+                        Username could not be empty
+                    </div>
+                    <div class="invalid-feedback" *ngIf="this.registerFormGroup.get('username')?.errors?.minlength">
+                        Username must be {{registerFormGroup.get('username')?.errors?.minlength?.requiredLength}}
+                        symbols
+                        at
+                        least
+                    </div>
+                </div>
+                <div class="col mb-3 has-validation">
+                    <label class="form-label">Email</label>
+                    <input class="form-control"
+                        [class.is-invalid]="this.registerFormGroup.get('email')?.invalid && this.registerFormGroup.get('email')?.touched"
+                        type="text" placeholder="email@mail.ru" formControlName="email" />
+
+                    <div class="invalid-feedback" *ngIf="this.registerFormGroup.get('email')?.errors?.required">
+                        Email could not be empty
+                    </div>
+                    <div class="invalid-feedback" *ngIf="this.registerFormGroup.get('email')?.errors?.email">
+                        Please provide real email
+                    </div>
+                </div>
+
+                <div class="col mb-3 has-validation">
+                    <label class="form-label">Password</label>
+                    <input class="form-control"
+                        [class.is-invalid]="this.registerFormGroup.get('password')?.invalid && this.registerFormGroup.get('password')?.touched"
+                        placeholder="password" required="" type="password" formControlName="password" />
+
+                    <div class="invalid-feedback" *ngIf="this.registerFormGroup.get('password')?.errors?.required">
+                        Password could not be empty
+                    </div>
+                    <div class="invalid-feedback" *ngIf="this.registerFormGroup.get('password')?.errors?.minlength">
+                        Password must be {{registerFormGroup.get('password')?.errors?.minlength?.requiredLength}}
+                        symbols
+                        at
+                        least
+                    </div>
+                </div>
+
+
+                <div class="row justify-content-between">
+                    <div class="col-auto">
+                        <button class="btn btn-link"
+                            (click)="switchRegistrationForm()">{{getSwitchText()}}</button>
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-success" type="submit"
+                            [disabled]="registerFormGroup.invalid">Register</button>
+                    </div>
+                </div>
+            </form>
+            <div class="alert alert-danger mt-3" *ngIf="isErrorCatchedInRegistration()" role="alert">
+                <p>Warning: {{getErrorMessage()}}</p>
+                <p>Solution: {{getErrorSolution()}}</p>
+            </div>
+        </div>
+    </div>
 </div>

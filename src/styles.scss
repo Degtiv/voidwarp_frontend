@@ -1,1 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+button {
+    padding: 5px;
+    margin: 0px 5px 5px 0px;
+
+    border-radius: 9px !important;
+}
+
+input {
+    border-radius: 9px !important;
+}
+
+.invalid-feedback {
+    text-align: right;
+}
